@@ -1,7 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const PORT = process.env.PORT || 8000;
 const UserModel = require('./models/Users')
 const dotenv = require('dotenv')
 
@@ -15,9 +14,9 @@ app.use(cors());
 app.use(express.json()); // this is used when we want to render a frontend data in backend 
 
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => console.log('❌ Database connection error:', err));
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log('Database connection error:', err));
 
 
 app.get('/', (req, res) => {
@@ -54,7 +53,7 @@ app.post("/createUser", (req, res) => {
     UserModel.create(req.body).then(users => res.json(users)).catch(err => res.json(err));
 })
 
-
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-    console.log("Server is Running!");
+    console.log(`Server is Running! ${PORT}`);
 })
